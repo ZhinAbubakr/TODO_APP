@@ -2,15 +2,18 @@ import React, { Component } from "react";
 import { Spin, Table } from "antd";
 
 class TodoList extends Component {
-  state = {
-    todos: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      todos: this.props.todoList,
+    };
+  }
+
   async componentDidMount() {
     await fetch("https://jsonplaceholder.typicode.com/todos/")
       .then((response) => response.json())
       .then((todosList) => {
-        console.log(todosList);
-        this.setState({ todos: [...todosList, todosList] });
+        this.props.handleTodos(todosList);
       })
       .catch((error) => {
         console.log(error);

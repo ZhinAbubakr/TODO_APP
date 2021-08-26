@@ -1,14 +1,19 @@
 import React, { Component } from "react";
 
 export default class CreateTodo extends Component {
-  state = {
-    addTitle: "",
-    // addUserId: "",
-    addCompleted: "",
-    todos: [],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      addTitle: "",
+      // addUserId: "",
+      addCompleted: "",
+      todos: props.todoList,
+    };
+  }
 
   async AddTodo() {
+    // console.log(this.props.todoList);
+
     await fetch("https://jsonplaceholder.typicode.com/todos", {
       method: "POST",
       body: JSON.stringify({
@@ -21,17 +26,20 @@ export default class CreateTodo extends Component {
       },
     })
       .then((response) => response.json())
-      .then((json) =>
-        this.setState({ todos: [...this.state.todos, json] }, () =>
-          console.log(this.state.todos)
-        )
+      .then(
+        (json) => this.props.handleTodos(json)
+
+        // this.setState({ todos: [...this.state.todos, json] }, () => {
+        //   console.log(this.state.todos);
+        //   console.log(this.props.todoList);
+        // })
       );
     // console.log(this.state.todos);
   }
 
   handle(e) {
     this.setState({ addTitle: e.target.value });
-    console.log(this.state.addTitle);
+    // console.log(this.state.addTitle);
   }
   // AddUserId(e) {
   //   this.setState({ addUserId: e.target.value });
@@ -39,10 +47,11 @@ export default class CreateTodo extends Component {
   // }
   AddCompleted = (e) => {
     this.setState({ addCompleted: e.target.value });
-    console.log(this.state.addCompleted);
+    // console.log(this.state.addCompleted);
   };
 
   render() {
+    // console.log(this.props.todoList);
     return (
       <div>
         <input type="text" onChange={(e) => this.handle(e)} />

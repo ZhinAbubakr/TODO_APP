@@ -8,7 +8,14 @@ import { Layout, Menu, Typography } from "antd";
 const { Header, Content, Sider } = Layout;
 
 class App extends Component {
+  state = {
+    todoList: [],
+  };
+  handle = (value) => {
+    this.setState({ todoList: [...this.state.todoList, value] });
+  };
   render() {
+    // console.log(this.state.todoList);
     return (
       <div>
         <Router>
@@ -48,8 +55,27 @@ class App extends Component {
                 >
                   Todo List
                   <Switch>
-                    <Route path="/list" component={TodoList} />
-                    <Route path="/create" component={CreateTodo} />
+                    <Route
+                      path="/list"
+                      render={() => (
+                        <TodoList
+                          handleTodos={this.handle}
+                          todoList={this.state.todoList}
+                        />
+                      )}
+
+                      // component={<TodoList todoList={this.state.todoList} />}
+                    />
+                    <Route
+                      path="/create"
+                      render={() => (
+                        <CreateTodo
+                          handleTodos={this.handle}
+                          todoList={this.state.todoList}
+                        />
+                      )}
+                      // component={<CreateTodo todoList={this.state.todoList} />}
+                    />
                   </Switch>
                 </Content>
               </Layout>
